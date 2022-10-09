@@ -1,43 +1,73 @@
 package com.orthofx.owner.owner;
 
-//import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orthofx.owner.exception.ResourceNotFoundException;
+
 @RestController
+@RequestMapping("/api/v1/")
 public class OwnerController {
 
+//	@Autowired
+//	private OwnerService ownerService;
+	
 	@Autowired
-	private OwnerService ownerService;
+	private OwnerRepository ownerRepository;
 	
-	@RequestMapping("/owners")
+	
+	@GetMapping("/owners")
 	public List<Owner> getAllOwners() {
-		return ownerService.getAllOwners();
+		return this.ownerRepository.findAll();
 	}
 	
-	@RequestMapping("/owners/{id}")
-	public Owner getOwner(@PathVariable int id) {
-		return ownerService.getOwner(id);
+	@GetMapping("/owners/{id}")
+	public ResponseEntity<Owner> getOwnerById(@PathVariable(value = "id") Long ownerId) throws ResourceNotFoundException {
+		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+		return ResponseEntity.ok().body(owner);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST, value="/owners")
-	public void addOwner(@RequestBody Owner owner) {
-		ownerService.addOwner(owner);
+	@PostMapping("owners")
+	public Owner createOwner(@RequestBody Owner owner) {
+		return this.ownerRepository.save(owner);
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/owners/{id}")
-	public void updateOwner(@RequestBody Owner owner, @PathVariable int id) {
-		ownerService.updateOwner(id, owner);
+	public ResponseEntity<Owner> updateOwner(@PathVariable(value = "id") Long ownerId, @Validated @RequestBody Owner ownerDetails) throws ResourceNotFoundException{
+		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+		
+		owner.setName(ownerDetails.getName());
+		owner.setPhoneNumber(ownerDetails.getPhoneNumber());
+		owner.setVehicle(ownerDetails.getVehicle());
+		return ResponseEntity.ok(this.ownerRepository.save(owner));
 	}
 	
-	@RequestMapping(method=RequestMethod.DELETE, value="/owners/{id}")
-	public void deleteOwner(@PathVariable int id) {
-		ownerService.deleteOwner(id);
+	@DeleteMapping("owners/{id}")
+	public Map<String, Boolean> deleteOwner(@PathVariable(value = "id") Long ownerId) throws ResourceNotFoundException {
+		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+		
+		this.ownerRepository.delete(owner);
+		
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
 	}
+	
 }

@@ -1,25 +1,41 @@
 package com.orthofx.owner.owner;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "owners")
 public class Owner {
 
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "phone_number")
 	private String phoneNumber;
+	
+	@Column(name = "vehicle")
 	private String vehicle;
 	
 	public Owner() {
-		
+		super();
 	}
 	
-	public Owner(int id, String name, String phoneNumber, String vehicle) {
+	public Owner(String name, String phoneNumber, String vehicle) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.vehicle = vehicle;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	public void setId(int id) {
