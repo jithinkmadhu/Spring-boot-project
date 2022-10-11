@@ -1,11 +1,19 @@
 package com.orthofx.owner.owner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.orthofx.owner.vehicle.Vehicle;
 
 @Entity
 @Table(name = "owners")
@@ -23,6 +31,10 @@ public class Owner {
 	
 	@Column(name = "vehicle")
 	private String vehicle;
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "owners")
+	private List<Vehicle> vehicles = new ArrayList<>();
 	
 	public Owner() {
 		super();
@@ -58,6 +70,13 @@ public class Owner {
 	}
 	public void setVehicle(String vehicle) {
 		this.vehicle = vehicle;
+	}
+	
+	public List<Vehicle> getEmployee() {
+		return vehicles;
+	}
+	public void setEmployee(List<Vehicle> employee) {
+		this.vehicles = vehicles;
 	}
 	
 }

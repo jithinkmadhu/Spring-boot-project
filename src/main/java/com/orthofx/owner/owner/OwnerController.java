@@ -25,9 +25,6 @@ import com.orthofx.owner.exception.ResourceNotFoundException;
 @RestController
 @RequestMapping("/api/v1/")
 public class OwnerController {
-
-//	@Autowired
-//	private OwnerService ownerService;
 	
 	@Autowired
 	private OwnerRepository ownerRepository;
