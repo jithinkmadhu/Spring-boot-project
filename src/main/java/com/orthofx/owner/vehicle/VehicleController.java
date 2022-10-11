@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,18 +22,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orthofx.owner.exception.ResourceNotFoundException;
+import com.orthofx.owner.owner.Owner;
+import com.orthofx.owner.owner.OwnerRepository;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1")
 public class VehicleController {
 	
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	
+	@Autowired
+	private OwnerRepository ownerRepository;
+	
+	@GetMapping("/vehicles")
+	public List<Vehicle> getAllVehicles() {
+		return this.vehicleRepository.findAll();
+	}
 	
 	@GetMapping("owners/{ownerId}/vehicles")
 	public List<Vehicle> getAllVehicles(@PathVariable Long ownerId) {
-		return this.vehicleRepository.findAll();
+		List<Vehicle> vehicles = new ArrayList<>();
+		this.vehicleRepository.findByOwnerId(ownerId).forEach(vehicles::add);
+		return vehicles;
 	}
 	
 	@GetMapping("owners/{ownerId}/vehicles/{id}")
@@ -41,12 +53,17 @@ public class VehicleController {
 		return ResponseEntity.ok().body(vehicle);
 	}
 	
-	@PostMapping("/owners/{OwnerId}/vehicles")
-	public Vehicle createVehicle(@RequestBody Vehicle vehicle) {
-		return this.vehicleRepository.save(vehicle);
+	@PostMapping("/owners/{ownerId}/vehicles")
+	public Vehicle createVehicle(@RequestBody Vehicle vehicle, @PathVariable(value = "ownerId") Long ownerId) throws ResourceNotFoundException  {
+		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+		Vehicle vehicle1 = new Vehicle();
+		vehicle1.setOwner(owner);
+		vehicle1.setModel(vehicle.getModel());
+		vehicle1.setRegNo(vehicle.getRegNo());
+		return this.vehicleRepository.save(vehicle1);
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/owners/{OwnerId}/vehicles/{id}")
+	@PutMapping("/vehicles/{id}")
 	public ResponseEntity<Vehicle> updateVehicle(@PathVariable(value = "id") Long vehicleId, @Validated @RequestBody Vehicle vehicleDetails) throws ResourceNotFoundException{
 		Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id :: " + vehicleId));
 		
@@ -55,7 +72,7 @@ public class VehicleController {
 		return ResponseEntity.ok(this.vehicleRepository.save(vehicle));
 	}
 	
-	@DeleteMapping("vehicles/{id}")
+	@DeleteMapping("/vehicles/{id}")
 	public Map<String, Boolean> deleteVehicle(@PathVariable(value = "id") Long vehicleId) throws ResourceNotFoundException {
 		Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id :: " + vehicleId));
 		

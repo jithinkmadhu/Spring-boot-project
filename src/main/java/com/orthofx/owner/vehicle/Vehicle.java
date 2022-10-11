@@ -34,11 +34,11 @@ public class Vehicle {
 		super();
 	}
 
-	public Vehicle(String regNo, String model, Owner ownerId) {
+	public Vehicle(String regNo, String model, Long ownerId) {
 		super();
 		this.regNo = regNo;
 		this.model = model;
-		this.owner = owner;
+		this.owner = new Owner(ownerId, "", "","");
 	}
 
 	public long getId() {

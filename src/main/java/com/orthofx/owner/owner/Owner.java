@@ -33,15 +33,16 @@ public class Owner {
 	private String vehicle;
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "owners")
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "owner")
 	private List<Vehicle> vehicles = new ArrayList<>();
 	
 	public Owner() {
 		super();
 	}
 	
-	public Owner(String name, String phoneNumber, String vehicle) {
+	public Owner(Long id,String name, String phoneNumber, String vehicle) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.vehicle = vehicle;
@@ -72,10 +73,10 @@ public class Owner {
 		this.vehicle = vehicle;
 	}
 	
-	public List<Vehicle> getEmployee() {
+	public List<Vehicle> getVehicleDetails() {
 		return vehicles;
 	}
-	public void setEmployee(List<Vehicle> employee) {
+	public void setVehicleDetails(List<Vehicle> employee) {
 		this.vehicles = vehicles;
 	}
 	

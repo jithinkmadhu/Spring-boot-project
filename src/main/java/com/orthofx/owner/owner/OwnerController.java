@@ -41,7 +41,7 @@ public class OwnerController {
 		return ResponseEntity.ok().body(owner);
 	}
 	
-	@PostMapping("owners")
+	@PostMapping("/owners")
 	public Owner createOwner(@RequestBody Owner owner) {
 		return this.ownerRepository.save(owner);
 	}
@@ -56,7 +56,7 @@ public class OwnerController {
 		return ResponseEntity.ok(this.ownerRepository.save(owner));
 	}
 	
-	@DeleteMapping("owners/{id}")
+	@DeleteMapping("/owners/{id}")
 	public Map<String, Boolean> deleteOwner(@PathVariable(value = "id") Long ownerId) throws ResourceNotFoundException {
 		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
 		
