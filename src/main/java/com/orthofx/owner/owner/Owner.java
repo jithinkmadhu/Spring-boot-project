@@ -76,7 +76,7 @@ public class Owner {
 	public List<Vehicle> getVehicleDetails() {
 		return vehicles;
 	}
-	public void setVehicleDetails(List<Vehicle> employee) {
+	public void setVehicleDetails(List<Vehicle> vehicle) {
 		this.vehicles = vehicles;
 	}
 	
