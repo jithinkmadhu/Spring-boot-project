@@ -26,13 +26,13 @@ public class VehicleController {
 	
 	//get all vehicles
 	@GetMapping("/vehicles")
-	public List<Vehicle> getAllVehicles() {
+	public List<VehicleDTO> getAllVehicles() {
 		return this.vehicleService.getAllVehicles();
 	}
 	
 //	update a vehicle by id
 	@PutMapping("/vehicles/{id}")
-	public ResponseEntity<Vehicle> updateVehicle(@PathVariable(value = "id") Long vehicleId, @Validated @RequestBody Vehicle vehicleDetails) throws ResourceNotFoundException{
+	public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable(value = "id") Long vehicleId, @Validated @RequestBody VehicleDTO vehicleDetails) throws ResourceNotFoundException{
 		return this.vehicleService.updateVehicle(vehicleId, vehicleDetails);
 	}
 	

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orthofx.owner.exception.ResourceNotFoundException;
-import com.orthofx.owner.vehicle.Vehicle;
+import com.orthofx.owner.vehicle.VehicleDTO;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -28,25 +28,25 @@ public class OwnerController {
 	
 	//get all owners
 	@GetMapping("/owners")
-	public List<Owner> getAllOwners() {
+	public List<OwnerDTO> getAllOwners() {
 		return this.ownerService.getAllOwners();
 	}
 	
 	//get owner by Id
 	@GetMapping("/owners/{id}")
-	public ResponseEntity<Owner> getOwnerById(@PathVariable(value = "id") Long ownerId) throws ResourceNotFoundException{
+	public ResponseEntity<OwnerDTO> getOwnerById(@PathVariable(value = "id") Long ownerId) throws ResourceNotFoundException{
 		return this.ownerService.getOwnerById(ownerId);
 	}
 	
 	//create owner
 	@PostMapping("/owners")
-	public Owner createOwner(@RequestBody Owner owner) {
+	public OwnerDTO createOwner(@RequestBody OwnerDTO owner) {
 		return this.ownerService.createOwner(owner);
 	}
 	
 	//update owner by Id
 	@PutMapping("/owners/{id}")
-	public ResponseEntity<Owner> updateOwner(@PathVariable(value = "id") Long ownerId, @Validated @RequestBody Owner ownerDetails) throws ResourceNotFoundException{
+	public ResponseEntity<OwnerDTO> updateOwner(@PathVariable(value = "id") Long ownerId, @Validated @RequestBody OwnerDTO ownerDetails) throws ResourceNotFoundException{
 		return this.updateOwner(ownerId, ownerDetails);
 	}
 	
@@ -58,19 +58,19 @@ public class OwnerController {
 	
 	//get all vehicles of an owner
 	@GetMapping("owners/{ownerId}/vehicles")
-	public List<Vehicle> getAllVehicles(@PathVariable Long ownerId) {
+	public List<VehicleDTO> getAllVehicles(@PathVariable Long ownerId) {
 		return this.ownerService.getAllVehicles(ownerId);
 	}
 	
 	//get a vehicle of an owner
 	@GetMapping("owners/{ownerId}/vehicles/{id}")
-	public ResponseEntity<Vehicle> getVehicleById(@PathVariable(value = "id") Long vehicleId) throws ResourceNotFoundException {
+	public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable(value = "id") Long vehicleId) throws ResourceNotFoundException {
 		return this.ownerService.getVehicleById(vehicleId);
 	}
 	
 	//create a vehicle for an owner
 	@PostMapping("/owners/{ownerId}/vehicles")
-	public Vehicle createVehicle(@RequestBody Vehicle vehicle, @PathVariable(value = "ownerId") Long ownerId) throws ResourceNotFoundException  {
+	public VehicleDTO createVehicle(@RequestBody VehicleDTO vehicle, @PathVariable(value = "ownerId") Long ownerId) throws ResourceNotFoundException  {
 		return this.ownerService.createVehicle(vehicle, ownerId);
 	}
 	

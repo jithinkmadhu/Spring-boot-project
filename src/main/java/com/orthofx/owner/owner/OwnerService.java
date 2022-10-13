@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.orthofx.owner.exception.ResourceNotFoundException;
-import com.orthofx.owner.vehicle.Vehicle;
+import com.orthofx.owner.vehicle.VehicleDTO;
 import com.orthofx.owner.vehicle.VehicleRepository;
 
 @Service
@@ -23,21 +23,21 @@ public class OwnerService {
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	
-	public List<Owner> getAllOwners() {
+	public List<OwnerDTO> getAllOwners() {
 		return this.ownerRepository.findAll();
 	}
 	
-	public ResponseEntity<Owner> getOwnerById(Long ownerId) throws ResourceNotFoundException {
-		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id : " + ownerId));
+	public ResponseEntity<OwnerDTO> getOwnerById(Long ownerId) throws ResourceNotFoundException {
+		OwnerDTO owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id : " + ownerId));
 		return ResponseEntity.ok().body(owner);
 	}
 	
-	public Owner createOwner(@RequestBody Owner owner) {
+	public OwnerDTO createOwner(@RequestBody OwnerDTO owner) {
 		return this.ownerRepository.save(owner);
 	}
 	
-	public ResponseEntity<Owner> updateOwner(Long ownerId, Owner ownerDetails) throws ResourceNotFoundException{
-		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+	public ResponseEntity<OwnerDTO> updateOwner(Long ownerId, OwnerDTO ownerDetails) throws ResourceNotFoundException{
+		OwnerDTO owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
 		
 		owner.setName(ownerDetails.getName());
 		owner.setPhoneNumber(ownerDetails.getPhoneNumber());
@@ -45,7 +45,7 @@ public class OwnerService {
 	}
 	
 	public Map<String, Boolean> deleteOwner(Long ownerId) throws ResourceNotFoundException {
-		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+		OwnerDTO owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
 		
 		this.ownerRepository.delete(owner);
 		
@@ -54,20 +54,20 @@ public class OwnerService {
 		return response;
 	}
 	
-	public List<Vehicle> getAllVehicles(Long ownerId) {
-		List<Vehicle> vehicles = new ArrayList<>();
+	public List<VehicleDTO> getAllVehicles(Long ownerId) {
+		List<VehicleDTO> vehicles = new ArrayList<>();
 		this.vehicleRepository.findByOwnerId(ownerId).forEach(vehicles::add);
 		return vehicles;
 	}
 	
-	public ResponseEntity<Vehicle> getVehicleById(Long vehicleId) throws ResourceNotFoundException {
-		Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id : " + vehicleId));
+	public ResponseEntity<VehicleDTO> getVehicleById(Long vehicleId) throws ResourceNotFoundException {
+		VehicleDTO vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id : " + vehicleId));
 		return ResponseEntity.ok().body(vehicle);
 	}
 	
-	public Vehicle createVehicle(Vehicle vehicle, Long ownerId) throws ResourceNotFoundException  {
-		Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
-		Vehicle vehicle1 = new Vehicle();
+	public VehicleDTO createVehicle(VehicleDTO vehicle, Long ownerId) throws ResourceNotFoundException  {
+		OwnerDTO owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+		VehicleDTO vehicle1 = new VehicleDTO();
 		vehicle1.setOwner(owner);
 		vehicle1.setModel(vehicle.getModel());
 		vehicle1.setRegNo(vehicle.getRegNo());
