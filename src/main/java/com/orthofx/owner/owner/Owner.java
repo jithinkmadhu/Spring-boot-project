@@ -21,16 +21,13 @@ public class Owner {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@Column(name = "name")
 	private String name;
 	
 	@Column(name = "phone_number")
 	private String phoneNumber;
-	
-	@Column(name = "vehicle")
-	private String vehicle;
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER,mappedBy = "owner")
@@ -45,13 +42,12 @@ public class Owner {
 		this.id = id;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
-		this.vehicle = vehicle;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -66,18 +62,12 @@ public class Owner {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	public String getVehicle() {
-		return vehicle;
-	}
-	public void setVehicle(String vehicle) {
-		this.vehicle = vehicle;
-	}
 	
 	public List<Vehicle> getVehicleDetails() {
 		return vehicles;
 	}
 	public void setVehicleDetails(List<Vehicle> vehicle) {
-		this.vehicles = vehicles;
+		this.vehicles = vehicle;
 	}
 	
 }
