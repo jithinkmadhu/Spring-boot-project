@@ -48,7 +48,7 @@ public class OwnerController {
 	//update owner by Id
 	@PutMapping("/owners/{id}")
 	public ResponseEntity<OwnerDTO> updateOwner(@PathVariable(value = "id") Long ownerId, @Validated @RequestBody OwnerDTO ownerDetails) throws ResourceNotFoundException{
-		return this.updateOwner(ownerId, ownerDetails);
+		return this.ownerService.updateOwner(ownerId, ownerDetails);
 	}
 	
 	//delete owner by Id
@@ -59,7 +59,7 @@ public class OwnerController {
 	
 	//get all vehicles of an owner
 	@GetMapping("owners/{ownerId}/vehicles")
-	public List<VehicleDTO> getAllVehicles(@PathVariable Long ownerId) {
+	public List<VehicleDTO> getAllVehicles(@PathVariable Long ownerId) throws ResourceNotFoundException {
 		return this.ownerService.getAllVehicles(ownerId);
 	}
 	
