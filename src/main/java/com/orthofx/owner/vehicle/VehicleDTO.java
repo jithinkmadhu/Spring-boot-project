@@ -1,13 +1,13 @@
 package com.orthofx.owner.vehicle;
 
-import com.orthofx.owner.owner.OwnerDTO;
+import com.orthofx.owner.owner.Owner;
 
 public class VehicleDTO {
 
 	private Long id;
 	private String regNo;
 	private String model;
-	private OwnerDTO owner;
+	private Owner owner;
 	
 	public Long getId() {
 		return id;
@@ -27,10 +27,10 @@ public class VehicleDTO {
 	public void setModel(String model) {
 		this.model = model;
 	}
-	public OwnerDTO getOwner() {
+	public Owner getOwner() {
 		return owner;
 	}
-	public void setOwner(OwnerDTO owner) {
+	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 	

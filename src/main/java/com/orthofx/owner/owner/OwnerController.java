@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orthofx.owner.exception.ResourceNotFoundException;
+import com.orthofx.owner.vehicle.Vehicle;
 import com.orthofx.owner.vehicle.VehicleDTO;
 
 @RestController
@@ -40,7 +41,7 @@ public class OwnerController {
 	
 	//create owner
 	@PostMapping("/owners")
-	public OwnerDTO createOwner(@RequestBody OwnerDTO owner) {
+	public Owner createOwner(@RequestBody OwnerDTO owner) {
 		return this.ownerService.createOwner(owner);
 	}
 	
@@ -70,7 +71,7 @@ public class OwnerController {
 	
 	//create a vehicle for an owner
 	@PostMapping("/owners/{ownerId}/vehicles")
-	public VehicleDTO createVehicle(@RequestBody VehicleDTO vehicle, @PathVariable(value = "ownerId") Long ownerId) throws ResourceNotFoundException  {
+	public Vehicle createVehicle(@RequestBody VehicleDTO vehicle, @PathVariable(value = "ownerId") Long ownerId) throws ResourceNotFoundException  {
 		return this.ownerService.createVehicle(vehicle, ownerId);
 	}
 	
