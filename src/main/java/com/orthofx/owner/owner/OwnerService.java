@@ -39,7 +39,6 @@ public class OwnerService {
 		owner.setId(ownerDTO.getId());
 		owner.setName(ownerDTO.getName());
 		owner.setPhoneNumber(ownerDTO.getPhoneNumber());
-//		owner.setVehicleDetails(ownerDTO.get);
 		return owner;
 	}
 
@@ -50,6 +49,15 @@ public class OwnerService {
 		vehicleDTO.setRegNo(vehicle.getRegNo());
 		vehicleDTO.setOwner(vehicle.getOwner());
 		return vehicleDTO;
+	}
+	
+	private Vehicle vehicleDTE(VehicleDTO vehicleDTO) {
+		Vehicle vehicle = new Vehicle();
+		vehicle.setId(vehicleDTO.getId());
+		vehicle.setModel(vehicleDTO.getModel());
+		vehicle.setRegNo(vehicleDTO.getRegNo());
+		vehicle.setOwner(vehicleDTO.getOwner());
+		return vehicle;
 	}
 
 	// get all owners
@@ -74,7 +82,7 @@ public class OwnerService {
 	// update owner by Id
 	public ResponseEntity<OwnerDTO> updateOwner(Long ownerId, OwnerDTO ownerDetails) throws ResourceNotFoundException {
 		Owner owner = ownerRepository.findById(ownerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id : " + ownerId));
 		owner.setName(ownerDetails.getName());
 		owner.setPhoneNumber(ownerDetails.getPhoneNumber());
 		OwnerDTO ownerDTO = new OwnerDTO();
@@ -85,10 +93,10 @@ public class OwnerService {
 
 	// delete owner by Id
 	public Map<String, Boolean> deleteOwner(Long ownerId) throws ResourceNotFoundException {
-		Owner owner = ownerRepository.findById(ownerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+		ownerRepository.findById(ownerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id : " + ownerId));
 
-		this.ownerRepository.delete(owner);
+		this.ownerRepository.deleteById(ownerId);
 
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
@@ -99,7 +107,7 @@ public class OwnerService {
 	public List<VehicleDTO> getAllVehicles(Long ownerId) throws ResourceNotFoundException {
 		List<VehicleDTO> vehicles = new ArrayList<>();
 		ownerRepository.findById(ownerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
+				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id : " + ownerId));
 		vehicles = vehicleRepository.findByOwnerId(ownerId).stream().map(this::vehicleETD).collect(Collectors.toList());
 		return vehicles;
 	}
@@ -117,9 +125,8 @@ public class OwnerService {
 	public Vehicle createVehicle(VehicleDTO vehicleDetails, Long ownerId) throws ResourceNotFoundException {
 		Owner owner = ownerRepository.findById(ownerId)
 			
-				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id :: " + ownerId));
-		Vehicle vehicle = new Vehicle();
-		System.out.println(owner.getName());
+				.orElseThrow(() -> new ResourceNotFoundException("Owner not found for this id : " + ownerId));
+		Vehicle vehicle = vehicleDTE(vehicleDetails);
 		vehicle.setOwner(owner);
 		vehicle.setModel(vehicleDetails.getModel());
 		vehicle.setRegNo(vehicleDetails.getRegNo());

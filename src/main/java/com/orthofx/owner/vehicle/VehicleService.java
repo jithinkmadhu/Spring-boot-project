@@ -30,7 +30,7 @@ public class VehicleService {
 	}
 	
 	public ResponseEntity<VehicleDTO> updateVehicle(Long vehicleId, VehicleDTO vehicleDetails) throws ResourceNotFoundException{
-		Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id :: " + vehicleId));
+		Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id : " + vehicleId));
 		
 		vehicle.setModel(vehicleDetails.getModel());
 		vehicle.setRegNo(vehicleDetails.getRegNo());
@@ -39,7 +39,7 @@ public class VehicleService {
 	}
 	
 	public Map<String, Boolean> deleteVehicle(Long vehicleId) throws ResourceNotFoundException {
-		Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id :: " + vehicleId));
+		Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for this id : " + vehicleId));
 		
 		this.vehicleRepository.delete(vehicle);
 		
